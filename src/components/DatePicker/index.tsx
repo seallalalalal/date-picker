@@ -31,10 +31,6 @@ function DatePicker({
     dayFormat,
   });
 
-  const startDate = currentMonth.clone().startOf("month").startOf("week");
-  const endDate = currentMonth.clone().endOf("month").endOf("week");
-  // get days of current month
-
   function handleDaySelect(newDate: Moment) {
     if (!props.startDate) {
       props.onChange(newDate.startOf("day"), props.endDate);

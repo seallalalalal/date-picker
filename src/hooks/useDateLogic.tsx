@@ -19,8 +19,8 @@ export function useDateLogic({
   );
 
   const getDaysInMonth = useCallback(() => {
-    const firstDay = currentMonth.clone().startOf("month");
-    const lastDay = currentMonth.clone().endOf("month");
+    const firstDay = currentMonth.clone().startOf("month").startOf("week");
+    const lastDay = currentMonth.clone().endOf("month").endOf("week");
     const days = [];
 
     for (let day = firstDay; day.isSameOrBefore(lastDay); day.add(1, "day")) {
