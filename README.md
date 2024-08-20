@@ -23,26 +23,24 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Demo
 
-// TODO:
-
 - [Vide Demo here](https://date-picker-eosin.vercel.app/)
 
 ### Shared DatePicker Props
 
-| Property Name                | Type                | Default Value |
-| ---------------------------- | ------------------- | ------------- |
-| startDate                    | Moment \| undefined | required      |
-| endDate                      | Moment \| undefined | required      |
-| className                    | string              | undefined     |
-| disabledOnClickNextMonth     | boolean             | false         |
-| disabledOnClickPreviousMonth | boolean             | false         |
-| disabledTodayAfter           | boolean             | false         |
-| dayRenderer                  | Function            | undefined     |
-| headerRenderer               | Function            | undefined     |
-| monthFormat                  | string              | undefined     |
-| dayFormat                    | string              | undefined     |
-| defaultHightlightToday       | boolean             | true          |
-| showDaysOfWeek               | boolean             | true          |
+| Property Name                | Type                | Default Value   |
+| ---------------------------- | ------------------- | --------------- |
+| startDate                    | Moment \| undefined | required        |
+| endDate                      | Moment \| undefined | required        |
+| className                    | string              | undefined       |
+| disabledOnClickNextMonth     | boolean             | false           |
+| disabledOnClickPreviousMonth | boolean             | false           |
+| disabledTodayAfter           | boolean             | false           |
+| dayRenderer                  | Function            | undefined       |
+| headerRenderer               | Function            | undefined       |
+| monthFormat                  | string              | "YYYY 年 MM 月" |
+| dayFormat                    | string              | "D 日"          |
+| defaultHightlightToday       | boolean             | true            |
+| showDaysOfWeek               | boolean             | true            |
 
 ### Single DatePicker Props
 

@@ -14,10 +14,6 @@ interface RangeDatePickerProps extends SharedDatePickerProps {
 }
 
 interface SharedDatePickerProps {
-  // onChange: (
-  //   startDate: Moment | undefined,
-  //   endDate: Moment | undefined
-  // ) => void;
   startDate: Moment | undefined;
   endDate: Moment | undefined;
   className?: string;
@@ -34,8 +30,7 @@ interface SharedDatePickerProps {
   dayFormat?: string;
   defaultHightlightToday?: boolean; // default true
   showDaysOfWeek?: boolean; // default true
-  // TODOs:
-  //   mode?: "single" | "range"; // default single
+  // TODOs: future features
   //   disabledDays?: Moment[];
   //   defaultHighlightDays?: Moment[];
   //   locale?: string;
