@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import moment, { Moment } from "moment";
 import { DatePickerProps } from "@/types/datePicker";
 import DayButton from "../UI/DayButton";
 import MonthButton from "../UI/MonthButton";
+import { useDateLogic } from "@/hooks/useDateLogic";
 
 function DatePicker({
   mode = "single",
@@ -15,20 +16,25 @@ function DatePicker({
   disabledTodayAfter = false,
   ...props
 }: DatePickerProps) {
-  const [currentMonth, setCurrentMonth] = useState<Moment>(moment());
+  const {
+    currentMonth,
+    getDaysInMonth,
+    goToNextMonth,
+    goToPreviousMonth,
+    isDateInRange,
+    formattedMonth,
+    formattedDay,
+  } = useDateLogic({
+    startDate: props.startDate,
+    endDate: props.endDate,
+    monthFormat,
+    dayFormat,
+  });
 
   const startDate = currentMonth.clone().startOf("month").startOf("week");
   const endDate = currentMonth.clone().endOf("month").endOf("week");
   // get days of current month
-  function getDays() {
-    const _startDay = startDate.clone();
-    const _days: Moment[] = [];
-    while (_startDay.isBefore(endDate)) {
-      _days.push(_startDay.clone());
-      _startDay.add(1, "day");
-    }
-    return _days;
-  }
+
   function handleDaySelect(newDate: Moment) {
     if (!props.startDate) {
       props.onChange(newDate.startOf("day"), props.endDate);
@@ -42,26 +48,21 @@ function DatePicker({
       props.onChange(newDate.startOf("day"), undefined);
     }
   }
-  function onClickPrevMonth() {
-    setCurrentMonth((prev) => prev.clone().subtract(1, "month"));
-  }
-  function onClickNextMonth() {
-    setCurrentMonth((prev) => prev.clone().add(1, "month"));
-  }
+
   const renderHeader = () => (
     <div className="flex justify-between items-center w-[350px] h-[44px] mb-4">
       <MonthButton
         disabled={disabledOnClickPreviousMonth}
-        onClick={() => onClickPrevMonth()}
+        onClick={() => goToPreviousMonth()}
       >
         {"<"}
       </MonthButton>
-      <div>{currentMonth.format(monthFormat)}</div>
+      <div>{formattedMonth()}</div>
       <MonthButton
         disabled={
           moment().isSame(currentMonth, "month") && disabledOnClickNextMonth
         }
-        onClick={() => onClickNextMonth()}
+        onClick={() => goToNextMonth()}
       >
         {">"}
       </MonthButton>
@@ -83,17 +84,17 @@ function DatePicker({
   const renderDays = () => {
     return (
       <div className="grid grid-cols-7 h-full">
-        {getDays().map((day, index) => {
+        {getDaysInMonth().map((day, index) => {
           const isCurrentMonth = day.isSame(currentMonth, "month");
           const isToday = day.isSame(moment(), "day");
           console.log({
             startDate: props.startDate,
             endDate: props.endDate,
-            isBetween: day.isBetween(props.startDate, props.endDate),
+            isBetween: isDateInRange(day),
           });
           const isActive =
             day.isSame(props.startDate) ||
-            (!!props.endDate && day.isBetween(props.startDate, props.endDate));
+            (!!props.endDate && isDateInRange(day));
 
           if (!!props.dayRenderer) {
             return props.dayRenderer(day, isActive);
@@ -110,7 +111,7 @@ function DatePicker({
                   : !isCurrentMonth
               }
             >
-              {day.format(dayFormat)}
+              {formattedDay(day)}
             </DayButton>
           );
         })}
@@ -119,7 +120,7 @@ function DatePicker({
   };
 
   const header = () =>
-    props.headerRenderer?.(currentMonth, onClickPrevMonth, onClickNextMonth) ??
+    props.headerRenderer?.(currentMonth, goToPreviousMonth, goToNextMonth) ??
     renderHeader();
   const daysOfWeek = () => (!!showDaysOfWeek ? renderDaysOfWeek() : null);
 
